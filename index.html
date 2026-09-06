@@ -1,17 +1,143 @@
 <!DOCTYPE html>
 <html>
- <head>
- <script src="https://cdn.jsdelivr.net/npm/aframe@1.4.2/dist/aframe.min.js"></script>
- </head>
- <body>
-<a-scene>
- <a-box position="0 1 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
- <a-sphere position="2 1 -4" radius="1" color="#EF2D5E"></a-sphere>
- <a-cylinder position="-2 1 -4" radius="0.5" height="1.5"
-color="#FFC65D"></a-cylinder>
- <a-plane rotation="-90 0 0" width="10" height="10"
-color="#7BC8A4"></a-plane>
- <a-sky color="#ECECEC"></a-sky>
-</a-scene>
- </body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/aframe@1.4.2/dist/aframe.min.js"></script>
+    <style>
+      html, body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        background: #e6e6e6;
+        overflow: hidden;
+      }
+
+      #ui {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 10;
+        display: flex;
+        gap: 10px;
+      }
+
+      button {
+        padding: 10px 18px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        background: #2d8cff;
+        color: white;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+      }
+
+      #btn-industrial {
+        background: #2ecc71;
+      }
+
+      #btn-tanque {
+        background: #f59e0b;
+      }
+
+      a-scene {
+        width: 100vw;
+        height: 100vh;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="ui">
+      <button id="btn-basico">Formas</button>
+      <button id="btn-industrial">Industrial</button>
+      <button id="btn-tanque">Tanque</button>
+    </div>
+
+    <a-scene>
+      <a-assets>
+        <a-asset-item id="modeloIndustrial" src="models/Tanque.glb"></a-asset-item>
+      </a-assets>
+
+      <a-plane rotation="-90 0 0" width="35" height="25" color="#7BC8A4"></a-plane>
+      <a-sky color="#e7e7e7"></a-sky>
+
+      <a-entity id="grupo-basico">
+        <a-box position="0 1 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
+        <a-sphere position="2 1 -4" radius="1" color="#EF2D5E"></a-sphere>
+        <a-cylinder position="-2 1 -4" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
+      </a-entity>
+
+      <a-entity id="grupo-industrial" visible="true">
+        <!-- Tolva grande -->
+        <a-cylinder position="-5 6 0" radius="2.3" height="7" color="#dfe4ea" opacity="0.95"></a-cylinder>
+        <a-cylinder position="-5 9.5 0" radius="2.4" height="0.3" color="#f5f7fa"></a-cylinder>
+        <a-cylinder position="-5 6 0" radius="0.35" height="8.5" color="#b6bec7" opacity="0.9"></a-cylinder>
+
+        <!-- cuerpo principal -->
+        <a-box position="0 1.8 0" width="10" height="1.5" depth="4" color="#c7ced6"></a-box>
+        <a-box position="0 3.2 0" width="12" height="1.6" depth="4.4" color="#bcc7d0"></a-box>
+
+        <!-- sección de llenado -->
+        <a-box position="-1 2.2 0" width="5" height="1.2" depth="1.4" color="#a9b4bf"></a-box>
+        <a-box position="-5 2.7 0" width="1.5" height="1.5" depth="1.5" color="#8b99a3"></a-box>
+
+        <!-- manguera azul -->
+        <a-cylinder position="-2.5 0.9 0" radius="0.18" height="3.5" color="#1cb7ff" rotation="0 0 90"></a-cylinder>
+        <a-cylinder position="-4.6 0.9 0" radius="0.2" height="1.7" color="#0fa2e6" rotation="0 0 90"></a-cylinder>
+
+        <!-- cabezal dosificador -->
+        <a-box position="1.5 1.5 0" width="1.8" height="1.2" depth="1.8" color="#8e9aa5"></a-box>
+        <a-box position="2.5 1.5 0" width="1.6" height="0.8" depth="1.4" color="#d9e0e6"></a-box>
+        <a-cylinder position="3.4 1.5 0" radius="0.25" height="1.6" color="#89959f"></a-cylinder>
+        <a-sphere position="3.7 1.5 0" radius="0.22" color="#f9d423"></a-sphere>
+
+        <!-- panel -->
+        <a-box position="0 1.0 -2.3" width="4.5" height="1.1" depth="0.35" color="#2f3d4a"></a-box>
+        <a-box position="-1.3 1.1 -2.1" width="0.6" height="0.35" depth="0.08" color="#4ade80"></a-box>
+        <a-box position="0 1.1 -2.1" width="0.6" height="0.35" depth="0.08" color="#f59e0b"></a-box>
+        <a-box position="1.3 1.1 -2.1" width="0.6" height="0.35" depth="0.08" color="#ef4444"></a-box>
+
+        <!-- soportes -->
+        <a-box position="-6.2 0.5 -1.7" width="0.5" height="2.5" depth="0.5" color="#566674"></a-box>
+        <a-box position="-6.2 0.5 1.7" width="0.5" height="2.5" depth="0.5" color="#566674"></a-box>
+        <a-box position="6.5 0.5 -1.7" width="0.5" height="2.5" depth="0.5" color="#566674"></a-box>
+        <a-box position="6.5 0.5 1.7" width="0.5" height="2.5" depth="0.5" color="#566674"></a-box>
+
+        <!-- pedal -->
+        <a-box position="8.4 0.6 1.9" width="2.5" height="0.5" depth="1.3" color="#6d7d8d"></a-box>
+        <a-box position="8.5 1.0 2.1" width="1.6" height="0.35" depth="0.8" color="#f0c419"></a-box>
+      </a-entity>
+
+      <a-entity id="grupo-tanque" visible="false">
+        <a-gltf-model src="#modeloIndustrial" position="0 0 -5" scale="0.08 0.08 0.08"></a-gltf-model>
+      </a-entity>
+    </a-scene>
+
+    <script>
+      const grupoBasico = document.getElementById('grupo-basico');
+      const grupoIndustrial = document.getElementById('grupo-industrial');
+      const grupoTanque = document.getElementById('grupo-tanque');
+
+      function mostrarGrupo(grupoVisible) {
+        grupoBasico.setAttribute('visible', grupoVisible === grupoBasico);
+        grupoIndustrial.setAttribute('visible', grupoVisible === grupoIndustrial);
+        grupoTanque.setAttribute('visible', grupoVisible === grupoTanque);
+      }
+
+      document.getElementById('btn-basico').addEventListener('click', () => {
+        mostrarGrupo(grupoBasico);
+      });
+
+      document.getElementById('btn-industrial').addEventListener('click', () => {
+        mostrarGrupo(grupoIndustrial);
+      });
+
+      document.getElementById('btn-tanque').addEventListener('click', () => {
+        mostrarGrupo(grupoTanque);
+      });
+    </script>
+  </body>
 </html>
