@@ -90,6 +90,30 @@
         display: inline-block;
       }
 
+      #mobile-controls {
+        display: none;
+        position: fixed;
+        right: 18px;
+        bottom: 24px;
+        z-index: 10;
+      }
+
+      body.phone-device #mobile-controls {
+        display: block;
+      }
+
+      #btn-avanzar {
+        width: 92px !important;
+        height: 92px !important;
+        max-height: 92px !important;
+        border-radius: 50%;
+        padding: 8px !important;
+        background: #14532d;
+        font-size: 14px;
+        touch-action: none;
+        user-select: none;
+      }
+
       a-scene {
         width: 100vw;
         height: 100vh;
@@ -106,10 +130,16 @@
       <button id="btn-ar">AR</button>
     </div>
 
+    <div id="mobile-controls">
+      <button id="btn-avanzar">Avanzar</button>
+    </div>
+
     <a-scene vr-mode-ui="enabled: true" webxr="optionalFeatures: hit-test, local-floor; overlayElement: #ui">
       <a-assets>
         <a-asset-item id="modeloIndustrial" src="models/Tanque.glb"></a-asset-item>
       </a-assets>
+
+      <a-camera id="camera" position="0 1.6 0" look-controls wasd-controls></a-camera>
 
       <a-plane rotation="-90 0 0" width="35" height="25" color="#7BC8A4"></a-plane>
       <a-sky color="#e7e7e7"></a-sky>
@@ -172,6 +202,47 @@
       document.querySelectorAll('#btn-vr, #btn-ar').forEach((boton) => {
         boton.style.setProperty('display', esTelefono ? 'inline-flex' : 'none', 'important');
       });
+
+      const camera = document.getElementById('camera');
+      const avanzar = document.getElementById('btn-avanzar');
+      let avanceActivo = false;
+      let ultimoTiempo = 0;
+
+      function actualizarAvance(tiempo) {
+        if (!avanceActivo) {
+          return;
+        }
+
+        if (ultimoTiempo) {
+          const segundos = Math.min((tiempo - ultimoTiempo) / 1000, 0.05);
+          const direccion = new THREE.Vector3();
+          camera.object3D.getWorldDirection(direccion);
+          direccion.y = 0;
+          direccion.normalize();
+          camera.object3D.position.addScaledVector(direccion, -2 * segundos);
+        }
+
+        ultimoTiempo = tiempo;
+        requestAnimationFrame(actualizarAvance);
+      }
+
+      function iniciarAvance(evento) {
+        evento.preventDefault();
+        avanceActivo = true;
+        ultimoTiempo = 0;
+        requestAnimationFrame(actualizarAvance);
+      }
+
+      function detenerAvance(evento) {
+        evento.preventDefault();
+        avanceActivo = false;
+        ultimoTiempo = 0;
+      }
+
+      avanzar.addEventListener('pointerdown', iniciarAvance);
+      avanzar.addEventListener('pointerup', detenerAvance);
+      avanzar.addEventListener('pointercancel', detenerAvance);
+      avanzar.addEventListener('pointerleave', detenerAvance);
 
       const grupoBasico = document.getElementById('grupo-basico');
       const grupoIndustrial = document.getElementById('grupo-industrial');
